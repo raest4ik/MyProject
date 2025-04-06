@@ -6,46 +6,75 @@ namespace MagicalGuardians
     {
         public void StartGame()
         {
-            Console.WriteLine("Добро пожаловать в игру 'Магические Стражи'!");
-
-            // Создание магического существа
-            Console.Write("Введите силу: ");
-            int strength = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Введите ловкость: ");
-            int agility = Convert.ToInt32(Console.ReadLine());
-            Console.Write("Введите интеллект: ");
-            int intelligence = Convert.ToInt32(Console.ReadLine());
-
-            MagicalAttributes attributes = new MagicalAttributes(strength, agility, intelligence);
-
-            Console.WriteLine($"Атрибуты: {attributes}");
-
-            // Создание монстра
-            Monster monster = new Monster("Дракон", 100);
-            Console.WriteLine($"Вы встретили {monster}!");
-
-            // Битва с монстром
-            while (monster.Health > 0)
+            while (true)
             {
-                Console.WriteLine("Выберите действие: 1 - Атака, 2 - Отступить");
-                int action = Convert.ToInt32(Console.ReadLine());
+                Console.Write("Введите 'play' для начала игры или 'stop' для выхода: ");
+                string input = Console.ReadLine().ToLower();
 
-                if (action == 1)
+                if (input == "stop")
                 {
-                    monster.Health -= attributes.Strength;
-                    Console.WriteLine($"Вы нанесли {attributes.Strength} урона.");
-                    Console.WriteLine($"Здоровье монстра: {monster.Health}");
-                }
-                else if (action == 2)
-                {
-                    Console.WriteLine("Вы отступили.");
+                    Console.WriteLine("Выход из игры.");
                     break;
                 }
-            }
+                else if (input == "play")
+                {
+                    // Создание магического существа
+                    int strength = GetIntInput("Введите силу: ");
+                    int agility = GetIntInput("Введите ловкость: ");
+                    int intelligence = GetIntInput("Введите интеллект: ");
 
-            if (monster.Health <= 0)
+                    MagicalAttributes attributes = new MagicalAttributes(strength, agility, intelligence);
+
+                    Console.WriteLine($"Атрибуты: {attributes}");
+
+                    // Создание монстра
+                    Monster monster = new Monster("Дракон", 100);
+                    Console.WriteLine($"Вы встретили {monster}!");
+
+                    // Битва с монстром
+                    while (monster.Health > 0)
+                    {
+                        Console.WriteLine("Выберите действие: 1 - Атака, 2 - Отступить");
+                        int action = GetIntInput("Введите действие: ");
+
+                        if (action == 1)
+                        {
+                            monster.Health -= attributes.Strength;
+                            Console.WriteLine($"Вы нанесли {attributes.Strength} урона.");
+                            Console.WriteLine($"Здоровье монстра: {monster.Health}");
+                        }
+                        else if (action == 2)
+                        {
+                            Console.WriteLine("Вы отступили.");
+                            break;
+                        }
+                    }
+
+                    if (monster.Health <= 0)
+                    {
+                        Console.WriteLine("Вы победили монстра!");
+                    }
+                }
+                else
+                {
+                    Console.WriteLine("Недопустимый ввод. Попробуйте еще раз.");
+                }
+            }
+        }
+
+        private int GetIntInput(string prompt)
+        {
+            while (true)
             {
-                Console.WriteLine("Вы победили монстра!");
+                Console.Write(prompt);
+                if (int.TryParse(Console.ReadLine(), out int value))
+                {
+                    return value;
+                }
+                else
+                {
+                    Console.WriteLine("Недопустимый ввод. Введите целое число.");
+                }
             }
         }
     }
