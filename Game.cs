@@ -39,9 +39,11 @@ namespace MagicalGuardians
 
                         if (action == 1)
                         {
-                            monster.Health -= attributes.Strength;
-                            Console.WriteLine($"Вы нанесли {attributes.Strength} урона.");
+                            monster.Health -= attributes.Strength * attributes.Agility *1.2 * attributes.Intelligence *1.1;
+                            Console.WriteLine($"Вы нанесли {attributes.Strength * attributes.Agility *1.2 * attributes.Intelligence *1.1} урона.");
+                            if (monster.Health>=0)
                             Console.WriteLine($"Здоровье монстра: {monster.Health}");
+                            
                         }
                         else if (action == 2)
                         {
